@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			.clearfix:after{
+				content: '';
+				display: block;
+				clear: both;
+			}
+			body{
+				background: rgba(194,194,194,0.5);
+			}
+			#box{
+				width: 960px;
+				height: 600px;
+				background:url(img1/bg_01.jpg);
+				margin: 10px auto;
+				border-radius: 8px;
+			}
+			#left{
+				width: 264px;
+				padding: 50px;
+				text-align: center;
+				float: left;
+			}
+			#left h3{
+				font: 40px/50px "微软雅黑";
+				color: #fff;
+			}
+			#left p{
+				font: 20px/36px "微软雅黑";
+				color: #fff;
+			}
+			#right{
+				width: 210px;
+				height: 450px;
+				padding: 150px 236px 0 150px;
+				float: left;
+				position: relative;
+			}
+			#m1{
+				width: 300px;
+				height: 100px;
+				position: absolute;
+				top: 100px;
+				left: 150px;
+			}
+			#m1 a{
+				position: absolute;
+				left: 150px;
+			}
+			h2{
+				font: bold 30px/40px "仿宋";
+				color: #25caf3;
+			}
+			ul{
+				width: 210px;
+			}
+			li{
+				width: 30px;
+				height: 30px;
+				float: left;
+				list-style: none;
+				text-align: center;
+				font: bold 18px/30px "微软雅黑";
+			}
+			#m2 span{
+				float: left;
+				width: 30px;
+				height: 30px;
+				text-align: center;
+				line-height: 30px;
+			}
+			#m2 span.active{
+				background: #a55fc9 ;
+				color: #77e9f7;
+				border-radius: 50%;
+			}
+			
+			#year{
+				position: absolute;
+				right: 50px;
+				top: 50px;
+				font: 20px/30px "微软雅黑";
+			}
+			#month{
+				font: 28px/36px "微软雅黑";
+				color: #E7D66B;
+				position: absolute;
+				left: 20px;
+				top: 10px;
+			}
+			#prev,#next{
+				position: absolute;
+				right: 110px;
+				top: 10px;
+				cursor: pointer;
+				font-weight: bold;
+				color: #555450;
+			}
+			#next{
+				top: 30px;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var left=document.getElementById('left');
+				var right=document.getElementById('right');
+				var m1=document.getElementById('m1');
+				var m2=document.getElementById('m2');
+				var year=document.getElementById('year');
+				var month=document.getElementById('month');
+				var prev=document.getElementById('prev');
+				var next=document.getElementById('next');
+				
+				function time(){
+					var d1=new Date();
+					left.innerHTML='<h3>'+format(d1.getHours())+':'
+									 +format(d1.getMinutes())+':'
+									 +format(d1.getSeconds())+' '+'</h3>'
+									 +'<p>'+d1.getFullYear()+'年'
+									 +format(d1.getMonth()+1)+'月'
+									 +format(d1.getDate())+'号 星期'
+									 +formatWeek(d1.getDay())+'</p>'
+									 
+				}
+				
+				function format(v){
+					return v<10?'0'+v:''+v;
+				}
+				function formatWeek(v){
+					return['日','一','二','三','四','五','六'][v]
+				}
+				time();
+				setInterval(time,1000);
+				
+				
+				function getEndDay(year,month){
+					return new Date(year,month,0).getDate();
+				}
+				function getWeek(year,month){
+					return new Date(year,month,1).getDay();
+				}
+				function formatMonth(v){
+					return['January','February','March','April','May','June','July','August','September','October','November','December'][v]
+				}
+				var d=new Date();
+				rightrili(d);
+				function rightrili(d){
+					var lastEndDay=getEndDay(d.getFullYear(),d.getMonth());
+					
+					var curEndDay=getEndDay(d.getFullYear(),d.getMonth()+1);
+					var week=getWeek(d.getFullYear(),d.getMonth());
+					
+					var dayStr='';
+					var nextday=1;
+					week=week==0?7:week;
+					for(var i=0;i<42;i++){
+						if(i<week){
+							dayStr='<span style="color:#62f40a">'+(lastEndDay--)+'</span>'+dayStr;
+						}else if(i>=week+curEndDay){
+							dayStr+='<span style="color:#62f40a">'+(nextday++)+'</span>';
+						}else{
+							var cl=(i-week+1)==d.getDate()?'active':'';
+							if(d.getFullYear()!=new Date().getFullYear() || d.getMonth()!=new Date().getMonth()){
+								cl='';
+							}
+							dayStr+='<span class="'+cl+'">'+(i-week+1)+'</span>';
+						}
+					}
+					m2.innerHTML=dayStr;
+					year.innerHTML=d.getFullYear()+'年'
+					month.innerHTML=formatMonth(d.getMonth());
+				}
+				
+				
+				prev.onclick=function(){
+					d.setMonth(d.getMonth()-1); 
+					rightrili(d);
+				}
+				next.onclick=function(){
+					d.setMonth(d.getMonth()+1);
+					rightrili(d);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="box" class="clearfix">
+			<div id="left"></div>
+			<div id="right">
+				<span id="year"></span>
+				<div id="m1" class="clearfix">
+					<span id="month"></span>
+					<span id="prev">∧</span><span id="next">∨</span>
+				</div>
+				<ul class="clearfix">
+					<li>日</li>
+					<li>一</li>
+					<li>二</li>
+					<li>三</li>
+					<li>四</li>
+					<li>五</li>
+					<li>六</li>
+				</ul>
+				<div id="m2"></div>
+			</div>
+		</div>
+	</body>
+</html>
