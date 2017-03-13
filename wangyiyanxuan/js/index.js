@@ -138,7 +138,7 @@ for(var i=0;i<bSpans.length;i++){
 /*吸顶*/
 var a1=nav.querySelector('.a1');
 var a2=nav.querySelector('.a2');
-setInterval(function(){
+var titleTimer=setInterval(function(){
 	if(window.pageYOffset>=200){
 		a1.style.display='none';
 		a2.style.display='block';
@@ -265,3 +265,32 @@ oNext.onclick=function(){
 	moving=false;
 	circle2();
 }
+
+
+/*return top*/
+var toTop=document.querySelector("#toTop");
+var tAs=toTop.querySelectorAll('.con1 a');
+var tLast=toTop.querySelector('.last');
+var imgArr1=['img/pic_13.gif','img/pic_14.gif','img/pic_15.gif'];
+var imgArr2=['img/pic_10.gif','img/pic_11.gif','img/pic_12.gif'];
+var topTimer;
+
+for(var i=0;i<tAs.length;i++){
+	tAs[i].index=i;
+	tAs[i].onmouseover=function(){
+		var img=this.querySelector('img');
+		img.src=imgArr1[this.index];
+	};
+	tAs[i].onmouseout=function(){
+		var img=this.querySelector('img');
+		img.src=imgArr2[this.index];
+	};
+}
+topTimer=setInterval(function(){
+	if(window.pageYOffset>=600){
+		tLast.style.display='block';
+	}else{
+		tLast.style.display='none';
+	}
+},100)
+

@@ -466,6 +466,7 @@ nav .a2 .hover .pos a{
 
 /*pop*/
 #pop{
+	height: 478px;
 	background: #f4f0ea;
 	padding: 61px 0 57px 0;
 }
@@ -811,4 +812,50 @@ img{
 }
 img:hover{
 	transform: scale(1.1);
+}
+
+
+/*return top*/
+#toTop{
+	position: fixed;
+	right: 34px;
+	top: 250px;
+}
+#toTop img:hover{
+	transform: none;
+}
+#toTop a{
+	display: block;
+	text-align: center;
+	font: 12px/12px "微软雅黑";
+	color: #666666;
+}
+#toTop a:hover{
+	color: #b4a078;
+}
+#toTop div{
+	width: 58px;
+	border: 1px solid #ddd;
+	padding: 9px 0;
+	background: #fff;
+}
+#toTop div a:nth-of-type(2){
+	margin: 13px 0;
+}
+#toTop div img{
+	padding: 0 18px 7px 18px;
+}
+#toTop a span{
+	display: block;
+	font: 12px/25px "微软雅黑";
+}
+#toTop .last{
+	background: #999;
+	color: #fff;
+	padding-bottom: 8px;
+	display: none;
+}
+#toTop .last:hover{
+	background: #b4a078;
+	color: #fff;
 }
