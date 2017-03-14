@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			a{
+				text-decoration: none;
+				color: #2B2B2B;
+			}
+			a:hover{
+				color: #fff;
+			}
+			ul{
+				width: 200px;
+				list-style: none;
+				margin: 50px auto;
+			}
+			li span{
+				display: inline-block;
+				width: 40px;
+				height: 40px;
+				background: #E76308;
+				margin-bottom: 6px;
+				border-radius: 50%;
+				text-align: center;
+				font: 20px/40px "微软雅黑";
+				color: #fff;
+				cursor: pointer;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var ul=document.querySelector("ul");
+				var lis=document.querySelectorAll("li");
+				var spans=document.querySelectorAll("span");
+				
+				for(var i=0;i<spans.length;i++){
+					lis[i].index=i;
+					lis[i].onmouseover=function(){
+						for(var n=0;n<spans.length;n++){
+							lis[n].style.background='#25CAF3';
+						}
+						spans[this.index].style.background='#25CAF3';
+						this.style.background='#E71063';
+						if(this.previousElementSibling){
+							this.previousElementSibling.style.background='#C0C0C0';
+						}
+						if(this.nextElementSibling){
+							this.nextElementSibling.style.background='#C0C0C0';
+						}
+					}
+					lis[i].onmouseout=function(){
+						spans[this.index].style.background='#E76308';
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<ul>
+			<li><span>1</span><a href="1-手机短信.html">手机短信</a></li>
+			<li><span>2</span><a href="1-自定义滚动条.html">自定义滚动条</a></li>
+			<li><span>3</span><a href="2-键盘控制div移动.html">键盘控制div移动</a></li>
+			<li><span>4</span><a href="2-拖拽改变大小.html">拖拽改变大小</a></li>
+			<li><span>5</span><a href="3-图片轮换.html">图片轮换</a></li>
+		</ul>
+	</body>
+</html>
