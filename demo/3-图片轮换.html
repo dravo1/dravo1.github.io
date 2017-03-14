@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			img{
+				width: 200px;
+				height: 300px;
+				vertical-align: top;
+			}
+			#box{
+				width: 200px;
+				height: 300px;
+				overflow: hidden;
+				margin: 50px auto;
+				position: relative;
+			}
+			#box div{
+				width: 200px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				font-size: 0;
+			}
+			
+			#box div img{
+				display: inline-block;
+			}
+		</style>
+		<script src="js/move.js"></script>
+		<script>
+			window.onload=function(){
+				var div=document.querySelector("#box div");
+				var imgs=document.getElementsByTagName("img");
+				var w=imgs[0].offsetWidth;
+				var h=imgs[0].offsetHeight;
+				
+				var moving=true;
+				document.onkeydown=function(ev){
+					
+					if(!moving){
+						return;
+					}
+					moving=false;
+					
+					switch(ev.keyCode){
+						case 37:
+							div.style.width=w*imgs.length+'px';
+							move(div,{left:-w},300,'linear',function(){
+								div.appendChild(imgs[0]);
+								div.style.left=0;
+								
+								moving=true;
+							});
+							break;
+							
+						case 38:
+							div.style.width=w+'px';
+							move(div,{top:-h},300,'linear',function(){
+								div.appendChild(imgs[0]);
+								div.style.top=0;
+								
+								moving=true;
+							});
+							break;
+							
+						case 39:
+							div.style.width=w*imgs.length+'px';
+							div.insertBefore(imgs[imgs.length-1],imgs[0]);
+							div.style.left=-w+'px';
+							move(div,{left:0},300,'linear',function(){
+								
+								
+								moving=true;
+							});
+							break;
+							
+						case 40:
+							div.style.width=w+'px';
+							div.insertBefore(imgs[imgs.length-1],imgs[0]);
+							div.style.top=-h+'px';
+							move(div,{top:0},300,'linear',function(){
+								
+								
+								moving=true;
+							});
+							break;
+							
+							
+					}
+				}
+			};
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<div>
+				<img src="img/img-1.jpg"/>
+				<img src="img/img-2.jpg"/>
+				<img src="img/img-3.jpg"/>
+				<img src="img/img-4.jpg"/>
+			</div>
+		</div>
+	</body>
+</html>

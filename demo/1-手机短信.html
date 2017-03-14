@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			.box{
+				width: 200px;
+				border: 1px solid #000;
+				margin: 50px auto;
+			}
+			.box img{
+				width: 200px;
+			}
+			#top{
+				width: 200px;
+				height: 300px;
+			}
+			#top span{
+				font-size: 14px;
+				display: inline-block;
+				padding: 5px;
+				border: 1px solid gray;
+				border-radius: 5px;
+				margin: 3px;
+				max-width: 160px;
+				vertical-align: top;
+			}
+			.bottom{
+				width: 200px;
+				background: #EFEFEF;
+				margin: 0 auto;
+			}
+			.bottom img{
+				width: 40px;
+				border-radius: 50%;
+				padding: 5px;
+				vertical-align: middle;
+				
+			}
+			#text1{
+				width: 85px;
+				height: 40px;
+				vertical-align: middle;
+				border-radius: 4px;
+			}
+			#btn{
+				font: 14px/14px "微软雅黑";
+				color: #26d24f;
+				border: none;
+				background: none;
+				margin-left: 5px;
+				vertical-align: bottom;
+			}
+			ul{
+				list-style: none;
+				font: 12px/22px "微软雅黑";
+				border: 1px solid #E7E7B5;
+				border-radius: 6px;
+				margin: 0;
+				padding: 0;
+				width: 100px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				display: none;
+				background: #E7D66B;
+			}
+			li:hover{
+				background: #25CAF3;
+				color: #E73100;
+				cursor: pointer;
+			}
+			.box1{
+				width: 15px;
+				height: 15px;
+				border: 3px solid #808080;
+				border-radius: 50%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				opacity: 0;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var top=document.getElementById('top');
+				var text1=document.getElementById('text1');
+				var btn=document.getElementById('btn');
+				var img=document.getElementById('img');
+				var ul=document.querySelector("ul");
+				var lis=document.querySelectorAll("li");
+				var box1s=document.querySelectorAll(".box1");
+				var on=true;
+				
+				//给头像添加点击事件
+				img.onclick=function(){
+					
+					if(on==true){
+						img.src='img/头像2.jpg';
+						on=false;
+					}else{
+						img.src='img/头像1.jpg';
+						on=true;
+					};
+				};
+				
+				//text1焦点事件
+				text1.onfocus=function(){
+					text1.select();
+				}
+				text1.onblur=function(){
+					
+				}
+				for(var i=0;i<lis.length;i++){
+					lis[i].index=i;
+					lis[i].onclick=function(ev){
+						ul.style.display='';
+						if(this.index==0){
+							btn.onclick=function(){};
+							text1.onkeydown=function(ev){
+								if(!ev.ctrlKey&&ev.keyCode==13&&!ev.shiftKey){
+									fn();
+								}
+							}
+						}else if(this.index==1){
+							btn.onclick=function(){};
+							text1.onkeydown=function(ev){
+								if(ev.keyCode==13&&ev.ctrlKey){
+									fn();
+								}
+							}
+						}else{
+							btn.onclick=function(){
+								fn();
+							}
+							text1.onkeydown=function(ev){}
+						}
+					}
+				}
+				
+				
+				//点击发送
+				btn.onclick=function(){
+					fn();
+				}
+				
+				//ctrl回车发送
+				text1.onkeydown=function(ev){
+					if(ev.keyCode==13 && ev.ctrlKey||ev.keyCode==13&&!ev.shiftKey){
+						fn();
+					}
+				}
+				
+				
+				//输入的内容显示
+				function fn(){
+					var val=text1.value;
+					if(!val){
+						alert('请输入内容');
+						return;
+					}
+					
+					if(on==true){
+						top.innerHTML+='<p style="text-align: right"><span style="background: #eee;">'+text1.value+'</span><img src=img/头像1.jpg style="width: 40px; border-radius: 50%;" /></p>';
+					}else{
+						top.innerHTML+='<p style="text-align: left"><img src=img/头像2.jpg style="width: 40px; border-radius: 50%;" /><span style="background: #eee;">'+text1.value+'</span></p>';
+					}
+					text1.value='';
+				}
+				
+				//右键菜单
+				document.oncontextmenu=function(ev){
+					ul.style.display='block';
+					ul.style.left=ev.clientX+'px';
+					ul.style.top=ev.clientY+'px';
+					return false;
+				}
+				
+				//鼠标点击波纹效果
+				document.onclick=function(ev){
+					ul.style.display='';
+					fn1(box1s[0],ev);
+					setTimeout(function(){
+						fn1(box1s[1],ev)
+					},100);
+					setTimeout(function(){
+						fn1(box1s[2],ev)
+					},200);
+					setTimeout(function(){
+						fn1(box1s[3],ev)
+					},300);
+				}
+				
+				function fn1(obj,ev){
+					var opc=100;
+					
+					var timer=setInterval(function(){
+						obj.style.width=obj.offsetWidth+4+'px';
+						obj.style.height=obj.offsetHeight+4+'px';
+						obj.style.left=ev.clientX-obj.offsetWidth/2+'px';
+						obj.style.top=ev.clientY-obj.offsetHeight/2+'px';
+						obj.style.opacity=(opc-=4)/100;
+						if(opc<=0){
+							clearInterval(timer);
+							obj.style.width=15+'px';
+							obj.style.height=15+'px';
+							obj.style.opacity=0;
+						}
+					},16)
+				}
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div class="box">
+			<img src="img/bg_1.gif"/>
+			<div id="top"></div>
+			<div class="bottom">
+				<img id="img" src="img/头像1.jpg"/>
+				<input type="text" id="text1" value="右键菜单设置" />
+				<input type="button" id="btn" value="发送" />
+			</div>
+		</div>
+		<ul>
+			<li>enter键发送</li>
+			<li>ctrl+enter键发送</li>
+			<li>点击发送键发送</li>
+		</ul>
+		<div class="box1"></div>
+		<div class="box1"></div>
+		<div class="box1"></div>
+		<div class="box1"></div>
+	</body>
+</html>
