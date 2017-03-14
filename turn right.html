@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			.clearfix:after{
+				content: '';
+				display: block;
+				clear: both;
+			}
+			#box{
+				width: 1000px;
+				margin: 50px auto;
+				padding: 10px;
+			}
+			#left,#right{
+				width: 350px;
+				height: 456px;
+				float: left;
+				background: #ccc;
+				font: 28px/38px "微软雅黑";
+				color: #fff;
+				border-radius: 8px;
+			}
+			#right{
+				background: #77E9F7;
+				font-family: "仿宋";
+				color: #555450;
+			}
+			#middle{
+				padding-top: 40px;
+				width: 150px;
+				height: 200px;
+				float: left;
+				text-align: center;
+			}
+			button{
+				font: 28px/38px "微软雅黑";
+				color: #fff;
+				background: #25CAF3;
+				margin-bottom: 20px;
+				border-radius: 4px;
+			}
+			span{
+				display: block;
+				font: 28px/40px "微软雅黑";
+			}
+			strong{
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				background: #8D8C89;
+				border-radius: 50%;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var left=document.getElementById('left');
+				var right=document.getElementById('right');
+				var btn=document.querySelector('button');
+				var span=document.querySelector('span');
+				var strongs=document.querySelectorAll('strong');
+				var text1=left.innerHTML;
+				var t=text1.split('');
+				var n=0;
+				var timer1;
+				var timer2;
+				
+				btn.onclick=function(){
+					var t1=text1.split('');		//数组
+					var t2=[];
+					var i=0;
+					clearInterval(timer1);
+					clearInterval(timer2);
+					timer1=setInterval(fn1,200);
+					timer2=setInterval(fn2,200);
+					function fn1(){
+						t2.push(t1[i]);
+						var tBox2=t2.join('');
+						right.innerHTML=tBox2;
+						span.innerHTML=t1.length+'/'+t.length;
+						t1.shift();
+						var tBox1=t1.join('');
+						left.innerHTML=tBox1;
+						
+					};
+				};
+				function fn2(){
+					for(var i=0;i<strongs.length;i++){
+						strongs[i].style.background='#8D8C89';
+					};
+					if(n==strongs.length){
+						n=0;
+					};
+					strongs[n].style.background='red';
+					n++;
+				}
+				
+						
+			}
+		</script>
+	</head>
+	<body>
+		<div id="box" class="clearfix">
+			<div id="left">赵客缦胡缨，吴钩霜雪明。银鞍照白马，飒沓如流星。十步杀一人，千里不留行。事了拂衣去，深藏身与名。闲过信陵饮，脱剑膝前横。将炙啖朱亥，持觞劝侯嬴。三杯吐然诺，五岳倒为轻。眼花耳热后，意气素霓生。救赵挥金槌，邯郸先震惊。千秋二壮士，烜赫大梁城。纵死侠骨香，不惭世上英。谁能书阁下，白首太玄经。</div>
+			<div id="middle">
+				<button>把文字右移</button>
+				<span>0/0</span>
+				<strong></strong>
+				<strong></strong>
+				<strong></strong>
+				<strong></strong>
+				<strong></strong>
+				<strong></strong>
+				<strong></strong>
+				<strong></strong>
+			</div>
+			<div id="right"></div>
+		</div>
+	</body>
+</html>
