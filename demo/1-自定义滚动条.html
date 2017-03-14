@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			.clearfix:after{
+				content: '';
+				display: block;
+				clear: both;
+			}
+			#box{
+				width: 390px;
+				margin: 50px auto;
+				background: url(img/bg_01.jpg) no-repeat;
+				padding: 15px;
+				padding-top: 180px;
+			}
+			#text{
+				width: 370px;
+				height: 350px;
+				float: left;
+				position: relative;
+				overflow: hidden;
+			}
+			#text div{
+				font: 14px/16px "微软雅黑";
+				color: #999481;
+				position: absolute;
+				top: 0;
+			}
+			#wrap{
+				width: 20px;
+				height: 550px;
+				background: #DDDDDC;
+				opacity: 0.5;
+				float: left;
+				position: relative;
+				text-align: center;
+				top: -180px;
+				left: 15px;
+			}
+			#btn1,#btn2{
+				opacity: 0.7;
+				border: 8px solid #DDDDDC;
+				left: 2px;
+			}
+			#btn1{
+				border-bottom: 20px solid #a293ba;
+				position: absolute;
+				top: 0;
+			}
+			#btn2{
+				border-top: 20px solid #a293ba;
+				position: absolute;
+				bottom: 0;
+			}
+			#cont{
+				width: 14px;
+				height: 50px;
+				border-radius: 100px;
+				background: #9f99bd;
+				opacity: 0.5;
+				position: absolute;
+				top: 34px;
+				left: 3px;
+			}
+		</style>
+		<script>
+			function myScroll(obj,upFn,downFn){
+				obj.onmousewheel=fn;
+				obj.addEventListener('DOMMouseScroll',fn);
+				
+				function fn(ev){
+					if(ev.wheelDelta>0 || ev.detail<0){
+						upFn.call(obj,ev);
+					}else{
+						downFn.call(obj,ev);
+					}
+					
+					ev.preventDefault();
+					return false;
+				};
+			}
+			window.onload=function(){
+				var text=document.getElementById("text");
+				var div=document.querySelector("#text div");
+				var wrap=document.getElementById("wrap");
+				var btn1=document.getElementById("btn1");
+				var btn2=document.getElementById("btn2");
+				var cont=document.getElementById("cont");
+				var timer;
+				
+				//滚动块自身移动
+				cont.onmousedown=function(ev){
+					var disY=ev.clientY-cont.offsetTop;
+					document.onmousemove=function(ev){
+						var t=ev.clientY-disY;
+						fn(t);
+					};
+					document.onmouseup=function(){
+						document.onmousemove=null;
+					}
+					return false;
+				};
+				
+				//滚动条上下的点击事件
+				wrap.onclick=function(ev){
+					var step=5;
+					if(ev.clientY<(cont.offsetTop+50)){
+						cont.style.top=cont.offsetTop-step+'px';
+						
+					}else if(ev.clientY>cont.getBoundingClientRect().bottom){
+						cont.style.top=cont.offsetTop+step+'px';
+					}
+					var scale=cont.offsetTop/(wrap.offsetHeight-cont.offsetHeight-btn2.offsetHeight-34);
+					div.style.top=scale*(text.offsetHeight-div.offsetHeight)+'px';
+					if(cont.offsetTop<=34){
+						cont.style.top=34+'px';
+						div.style.top=0;
+					}else if(cont.offsetTop+cont.offsetHeight>=btn2.offsetTop){
+						cont.style.top=btn2.offsetTop-cont.offsetHeight+'px';
+					}
+					
+				}
+				
+				//上下箭头
+				btn1.onmousedown=function(){
+					timer=setInterval(function(){
+						if(cont.offsetTop<=34){
+							cont.style.top=34+'px';
+							div.style.top=0;
+							return;
+						}
+						cont.style.top=cont.offsetTop-1+'px';
+					},16);
+					
+				};
+				btn1.onmouseup=function(){
+					clearInterval(timer);
+				};
+				btn2.onmousedown=function(){
+					timer=setInterval(function(){
+						if(cont.offsetTop+cont.offsetHeight>=btn2.offsetTop){
+							cont.style.top=btn2.offsetTop-cont.offsetHeight+'px';
+							return;
+						}
+						cont.style.top=cont.offsetTop+1+'px';
+					},16);
+					
+				};
+				btn2.onmouseup=function(){
+					clearInterval(timer);
+				};
+				
+				//滚轮事件
+				myScroll(box,function(){
+					cont.style.top=cont.offsetTop-3+'px';
+					fn(cont.offsetTop);
+				},function(){
+					fn(cont.offsetTop);
+					cont.style.top=cont.offsetTop+3+'px';
+				});
+				
+				function fn(t){
+					if(t<=34){
+						t=34;
+					}else if(t>wrap.offsetHeight-cont.offsetHeight-btn2.offsetHeight){
+						t=wrap.offsetHeight-cont.offsetHeight-btn2.offsetHeight;
+					}
+					var scale=t/(wrap.offsetHeight-cont.offsetHeight-btn2.offsetHeight-34);
+					div.style.top=scale*(text.offsetHeight-div.offsetHeight)+'px';
+					if(t==34){
+						div.style.top=0;
+					}
+					cont.style.top=t+'px';
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="box" class="clearfix">
+			<div id="text">
+				<div>
+					<br />前端开发知识结构<br />
+	前端工程师<br />
+	浏览器<br />
+	IE6/7/8/9/10/11(Trident)<br />Firefox(Gecko)<br />Chrome/Chromium(Blink)<br />Safari(WebKit)Opera<br />(Blink)<br />
+	编程语言<br />
+	JavaScript/Node.js<br />CoffeeScript<br />TypeScript<br />
+	切页面<br />
+	HTML/HTML5<br />CSS/CSS3<br />Sass/LESS/Stylus<br />PhotoShop/Paint.net/Fireworks/GIMP/Sketch<br />
+	开发工具<br />
+		编辑器和IDE<br />
+		VIM/Sublime Text2<br />Notepad++/EditPlus<br />WebStorm<br />EmacsEmacsWiki<br />Brackets<br />Atom<br />Lime Text<br />Light Table<br />Codebox<br />TextMate<br />Neovim<br />Komodo IDE / Edit<br />Eclipse<br />Visual Studio/Visual Studio Code<br />NetBeans<br />Cloud9 IDE<br />HBuilder<br />Nuclide<br />
+		调试工具<br />
+		Firebug/Firecookie<br />YSlow<br />IEDeveloperToolbar/IETester<br />Fiddler<br />Chrome Dev Tools<br />Dragonfly<br />DebugBar<br />Venkman<br />
+		版本管理<br />
+		Git/SVN/Mercurial<br />Github/GitLab/Bitbucket/Gitorious/GNU<br />Savannah/Launchpad/SourceForge/TeamForge<br />
+		代码质量<br />
+		Coding style<br />
+		JSLint/JSHint/jscs<br />CSSLint<br />Markup Validation Service<br />HTML Validators<br />
+		单元测试<br />
+		QUnit/Jasmine<br />Mocha/Should/Chai/Expect<br />Unit JS<br />
+		自动化测试<br />
+		WebDriver/Protractor/Karma Runner/Sahi<br />phantomjs<br />SourceLabs/BrowserStack<br />
+		前端库/框架<br />
+		jQuery/Underscore/Mootools/Prototype.js<br />YUI3/Dojo/ExtJS/KISSY<br />Backbone/KnockoutJS/Emberjs<br />AngularJS<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;Batarang<br />Bootstrap<br />Semantic UI<br />Juice UI<br />Web Atoms<br />Polymer<br />Dhtmlx<br />qooxdoo<br />React<br />Brick<br />
+		前端标准/规范<br />
+		HTTP/1.1: RFCs 7230-7235<br />HTTP/2<br />ECMAScript3/5<br />W3C: DOM/BOM/XHTML/XML/JSON/JSONP/...<br />CommonJS Modules/AMD<br />HTML5/CSS3<br />Semantic Web<br />&nbsp;&nbsp;&nbsp;&nbsp;MicroData<br />&nbsp;&nbsp;&nbsp;&nbsp;RDFa<br />Web Accessibility<br />&nbsp;&nbsp;&nbsp;&nbsp;WCAG<br />&nbsp;&nbsp;&nbsp;&nbsp;Role Attribute<br />&nbsp;&nbsp;&nbsp;&nbsp;WAI-ARIA<br />
+		性能<br />
+		JSPerf<br />YSlow 35 rules<br />PageSpeed<br />HTTPWatch<br />DynaTrace's Ajax<br />高性能JavaScript<br />
+		SEO<br />
+		编程知识储备<br />
+		数据结构<br />OOP/AOP<br />原型链/作用域链<br />闭包<br />编程范型<br />设计模式<br />Javascript Tips<br />
+		部署流程<br />
+		压缩合并<br />
+		YUI Compressor<br />Google Clousure Complier<br />UglifyJS<br />CleanCSS<br />
+		文档输出<br />
+		JSDoc<br />Dox/Doxmate/Grunt-Doxmate<br />
+		项目构建工具<br />
+		make/Ant<br />GYP<br />Grunt<br />Gulp<br />Yeoman<br />FIS<br />Mod<br />
+		代码组织<br />
+		类库模块化<br />
+		CommonJS/AMD<br />YUI3模块<br />
+		业务逻辑模块化<br />
+		bower/component<br />
+		文件加载<br />
+		LABjs<br />SeaJS/Require.js<br />
+		模块化预处理器<br />
+		Browserify<br />
+		安全<br />
+		CSRF/XSS<br />CSP<br />Same-origin policy<br />ADsafe/Caja/Sandbox<br />
+		移动Web<br />
+		HTML5/CSS3<br />响应式网页设计<br />Zeptojs/iScroll<br />V5/Sencha Touch<br />PhoneGap<br />jQuery Mobile<br />W3C Mobile Web Initiative<br />W3C mobileOK Checker<br />Open Mobile Alliance<br />
+		前沿技术社区/会议<br />
+		D2/WebRebuild<br />NodeParty/W3CTech/HTML5梦工厂<br />JSConf/沪JS(JSConf.cn)<br />QCon/Velocity/SDCC<br />JSConf/NodeConf<br />CSSConf<br />YDN/YUIConf<br />HybridApp<br />WHATWG<br />MDN<br />codepen<br />w3cplus<br />CNode<br />
+		计算机知识储备<br />
+		编译原理<br />计算机网络<br />操作系统<br />算法原理<br />软件工程/软件测试原理<br />Unicode<br />
+		软技能<br />
+		知识管理/总结分享<br />沟通技巧/团队协作<br />需求管理/PM<br />交互设计/可用性/可访问性知识<br />
+		可视化<br />
+		SVG/Canvas/VML<br />SVG:D3/Raphaël/Snap.svg/DataV<br />Canvas:CreateJS/KineticJS<br />WebGL/Three.JS
+	
+				</div>
+			</div>
+			<div id="wrap">
+				<div id="btn1"></div>
+				<div id="cont"></div>
+				<div id="btn2"></div>
+			</div>
+		</div>
+	</body>
+</html>

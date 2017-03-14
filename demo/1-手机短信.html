@@ -123,7 +123,7 @@
 						if(this.index==0){
 							btn.onclick=function(){};
 							text1.onkeydown=function(ev){
-								if(!ev.ctrlKey&&ev.keyCode==13&&!ev.shiftKey){
+								if(!ev.ctrlKey&&ev.keyCode==13&&!ev.shiftKey&&!ev.altKey&&ev.keyCode==13){
 									fn();
 								}
 							}
