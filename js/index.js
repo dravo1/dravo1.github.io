@@ -10,10 +10,9 @@ window.onload=function(){
 		
 		for(var i=0;i<lis.length;i++){
 			var n=i-lis.length/2;
-			
+			as[i].style.display='none';
 			if(clicked){
 				n=n*15;
-				
 			}else{
 				n=360;
 			}
