@@ -31,7 +31,7 @@
 	btn.onclick=function(){
 		value=input.value;
 		jsonp({
-			url:'//wthrcdn.etouch.cn/weather_mini',
+			url:'http://wthrcdn.etouch.cn/weather_mini',
 			data:{
 				city:encodeURI(value)
 			},
