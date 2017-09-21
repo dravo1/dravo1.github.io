@@ -94,7 +94,7 @@
 		var ideaP=document.querySelector(".idea p");
 		ideaP.innerHTML=data.data.ganmao;
 		
-		//无缝滚动
+		//选项卡
 		var bottom=document.querySelector(".bottom");
 		var spans=bottom.querySelectorAll("span");
 		ul.innerHTML=ul.innerHTML+ul.innerHTML+ul.innerHTML;

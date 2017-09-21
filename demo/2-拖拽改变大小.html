@@ -20,140 +20,87 @@
 		<script>
 			window.onload=function(){
 				var box=document.getElementById("box");
+				var dir='';		//鼠标信息
+				var isDown=false;
+				var mes={};		//div的信息
 				
-				//鼠标方向
-				box.onmousemove=function(ev){
-					var t=ev.clientY-Pos(box).top;
-					var r=Pos(box).right-ev.clientX;
-					var d=Pos(box).bottom-ev.clientY;
-					var l=ev.clientX-Pos(box).left;
-					
-					if(t<=2||d<=2){
-						box.style.cursor='ns-resize';
-					}else if(l<=2||r<=4){
-						box.style.cursor='ew-resize';
-					}else{
-						box.style.cursor='auto';
-					}
-					
-					if(l<=4&&t<=4){
-						box.style.cursor='nw-resize';
-					}
-					if(r<=4&&t<=4){
-						box.style.cursor='ne-resize';
-					}
-					if(r<=4&&d<=4){
-						box.style.cursor='se-resize';
-					}
-					if(d<=4&&l<=4){
-						box.style.cursor='sw-resize';
-					}
+				box.onmousedown=function(ev){
+					isDown=true;
+					mes={
+						x:ev.clientX,
+						y:ev.clientY,
+						w:this.offsetWidth,
+						h:this.offsetHeight,
+						l:this.offsetLeft,
+						t:this.offsetTop,
+						r:getPos(this).right,
+						b:getPos(this).bottom
+					};
 				};
 				
-				//拖拽改变大小
-				box.onmousedown=function(ev){
-					var t=ev.clientY-Pos(box).top;
-					var r=Pos(box).right-ev.clientX;
-					var d=Pos(box).bottom-ev.clientY;
-					var l=ev.clientX-Pos(box).left;
-					var disX=ev.clientX;
-					var disY=ev.clientY;
-					var w=box.clientWidth;
-					var h=box.clientHeight;
-					var boxTop=Pos(box).top;
-					var boxLeft=Pos(box).left;
-					
-					if(t<=2){
-						document.onmousemove=function(ev){
-							Top(disY,ev,boxTop,h);
+				document.onmousemove=function(ev){
+					if(!isDown){
+						box.style.cursor='auto';
+						dir='';
+						if(ev.clientY<getPos(box).top+10){
+							dir+='n';
 						}
-						
-					}else if(r<=4){
-						document.onmousemove=function(ev){
-							Right(ev,disX,w);
+						if(ev.clientY>getPos(box).bottom-10){
+							dir+='s';
 						}
-						
-					}else if(d<=2){
-						document.onmousemove=function(ev){
-							down(ev,disY,h);
+						if(ev.clientX<getPos(box).left+10){
+							dir+='w';
 						}
-						
-					}else if(l<=2){
-						document.onmousemove=function(ev){
-							left(ev,disX,w,boxLeft);
+						if(ev.clientX>getPos(box).right-10){
+							dir+='e';
 						}
-					}
-					
-					if(l<=4&&t<=4){
-						document.onmousemove=function(ev){
-							left(ev,disX,w,boxLeft);
-							Top(disY,ev,boxTop,h);
+					}else{
+						if(dir.indexOf('e')!==-1){
+							var w=mes.w+ev.clientX-mes.x;
+							if(w<100){
+								w=100;
+							}
+							box.style.width=w+'px';
+						};
+						if(dir.indexOf('s')!==-1){
+							var h=mes.h+ev.clientY-mes.y;
+							if(h<100){
+								h=100;
+							}
+							box.style.height=h+'px';
+						};
+						if(dir.indexOf('w')!==-1){
+							var w=mes.w+mes.x-ev.clientX;
+							var l=mes.l-(mes.x-ev.clientX);
+							if(w<100){
+								w=100;
+								l=mes.r-100;
+							}
+							box.style.width=w+'px';
+							box.style.left=l+'px';
 						}
-					}
-					if(r<=4&&t<=4){
-						document.onmousemove=function(ev){
-							Top(disY,ev,boxTop,h);
-							Right(ev,disX,w);
-						}
-					}
-					if(r<=4&&d<=4){
-						document.onmousemove=function(ev){
-							Right(ev,disX,w);
-							down(ev,disY,h);
-						}
-					}
-					if(d<=4&&l<=4){
-						document.onmousemove=function(ev){
-							down(ev,disY,h);
-							left(ev,disX,w,boxLeft);
+						if(dir.indexOf('n')!==-1){
+							var h=mes.h+mes.y-ev.clientY;
+							var t=mes.t-(mes.y-ev.clientY);
+							if(h<100){
+								h=100;
+								t=mes.b-100;
+							}
+							box.style.height=h+'px';
+							box.style.top=t+'px';
 						}
 					}
-					
-					document.onmouseup=function(){
-						document.onmousemove=null;
-					};
+					box.style.cursor=dir+'-resize';
+				};
+				
+				document.onmouseup=function(ev){
+					isDown=false;
 				}
 				
-				function Pos(obj){
+				function getPos(obj){
 					return obj.getBoundingClientRect();
-				}
+				};
 				
-				function Top(disY,ev,boxTop,h){
-					var newHeight=disY-ev.clientY+h;
-					if(newHeight<100){
-						newHeight=100;
-						box.style.height=newHeight+'px';
-						box.style.top=box.offsetTop+'px';
-						return;
-					}
-					box.style.height=newHeight+'px';
-					box.style.top=boxTop-(disY-ev.clientY)+'px';
-				}
-				function Right(ev,disX,w){
-					var newWidth=ev.clientX-disX+w;
-					if(newWidth<100){
-						newWidth=100;
-					}
-					box.style.width=newWidth+'px';
-				}
-				function down(ev,disY,h){
-					var newHeight=ev.clientY-disY+h;
-					if(newHeight<100){
-						newHeight=100;
-					}
-					box.style.height=newHeight+'px';
-				}
-				function left(ev,disX,w,boxLeft){
-					var newWidth=disX-ev.clientX+w;
-					if(newWidth<100){
-						newWidth=100;
-						box.style.width=newWidth+'px';
-						box.style.left=400+'px';
-						return;
-					}
-					box.style.width=newWidth+'px';
-					box.style.left=boxLeft+(ev.clientX-disX)+'px';
-				}
 			}
 		</script>
 	</head>
